@@ -1,17 +1,19 @@
 package com.portifole.web.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_user") //cria tabela no banco de dados
 @Getter //CRIA GETTERS AUTOMATICO
+@Setter //CRIA SETTERS AUTOMATICO
 public class User  implements Serializable {
 
     // Garante compatibilidade ao converter objeto em bytes (rede/cache/sessão)
@@ -24,6 +26,11 @@ public class User  implements Serializable {
     private String email;
     private String phone;
     private  String password;
+
+
+    @Setter(AccessLevel.NONE) //Impede que o setter seja gerado para a lista de pedidos, garantindo que a lista seja manipulada apenas através dos métodos da classe
+    @OneToMany(mappedBy = "client") //Indica que a associação é mapeada pelo atributo "client" na classe Order
+    private List<Order> orders = new ArrayList<>(); //Associação com a classe Order (um usuário pode ter vários pedidos)
 
     public  User(){
     }
